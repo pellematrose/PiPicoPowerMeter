@@ -22,7 +22,7 @@ import time
 import math
 from drivers.ina219 import ina219
 import utime
-from functions import format_number, show_value, multi_show_values
+from functions import format_number, show_value, multi_show_values, start_screen
 
 from color_setup import ssd
 
@@ -72,7 +72,7 @@ MODE_SHUNT_BUS_C = 0x07	#Shunt and bus, continuous
 # actual used mode (edit here)
 SHUNT_OHMS = 0.1 #R
 VBUS = VBUS_RANGE_32
-VSHUNT = VSHUNT_MAX_4
+VSHUNT = VSHUNT_MAX_8
 BADC = BADC_12BIT
 SADC = SADC_12BIT
 MODE = MODE_SHUNT_BUS_C
@@ -126,11 +126,8 @@ led2.value(0)
 ina = ina219(INA_ADDR, i2c_ina)
 ina.configure(SHUNT_OHMS, VBUS, VSHUNT, BADC, SADC, MODE)
     
-# Write initial Text on OLED                
-ssd.text("Power Meter", 0, 0)
-ssd.show()
-
-time.sleep_ms(500)
+# Write start screen on OLED
+start_screen(VBUS, VSHUNT)
 
 def btn_callback(button):
     global btn_isr_flag, btn_debounce_t
