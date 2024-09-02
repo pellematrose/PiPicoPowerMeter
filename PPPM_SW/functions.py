@@ -2,14 +2,50 @@ from color_setup import ssd
 from gui.core.writer import Writer
 from gui.core.nanogui import refresh                             
 from gui.widgets.label import Label
-
+from time import sleep
+import time
 # Fonts
-#import gui.fonts.arial10 as arial10
+import gui.fonts.arial10 as arial10
 #import gui.fonts.courier20 as fixed
 import gui.fonts.font6 as small
 import gui.fonts.arial35 as arial35
 #import gui.fonts.arial_50 as arial50
 import gui.fonts.freesans20 as free20
+
+def start_screen(bus, shunt):
+    print(bus)
+    print(shunt)
+    if bus == 0:
+        vol = 16
+    elif bus == 1:
+        vol = 32
+    
+    if shunt == 0:
+        vsh = 40
+    elif shunt == 1:
+        vsh = 80
+    elif shunt == 2:
+        vsh = 160
+    elif shunt == 3:
+        vsh = 320
+    else: vsh = 0    
+    
+    ssd.fill(0)
+    refresh(ssd)
+    
+    wri = Writer(ssd, free20, verbose=False)
+    wri.set_clip(False, False, False)
+    Label(wri, 0, 0, 'Settings', bdcolor=False)
+
+    wri2 = Writer(ssd, arial10, verbose=False)
+    wri2.set_clip(False, False, False)
+    Label(wri2, 25, 0, f"Max Volage = {vol}V")
+    Label(wri2, 35, 0, f"Max Current = {vsh}mA")
+    
+    refresh(ssd)
+    time.sleep_ms(1000)
+    ssd.fill(0)
+    refresh(ssd)
 
 def format_number(num):
     if num >= 100:
